@@ -12,7 +12,7 @@
 # if the number of peaks is between nlim and plim
 # the light curve may contain an eclipsing binary
 #
-# written by S. Eggl 20190329
+# written by S. Eggl and M. Kudryashova 20190329
 #############################################################
 
 

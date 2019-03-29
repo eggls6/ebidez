@@ -15,10 +15,8 @@
 # written by S. Eggl and M. Kudryashova 20190329
 #############################################################
 
-
 import matplotlib.pyplot as plt
 import numpy as np
-from astropy.utils.data import download_file
 from astropy.io import fits
 import glob
 import os
@@ -35,8 +33,8 @@ plim=50
 ### FLUX FILTERS
 #flux min
 fmin=1500
-# minimum distance between min flux and max flux
-dfmin=600
+# minimum distance between min flux and max flux in percent
+dfmin=10
 
 ### HISTOGRAM 
 #time bins
@@ -46,10 +44,10 @@ fbins=50
 
 ### TESS INPUT DATA
 fluxtype="PDCSAP_FLUX"
-path_to_lcs='/data/epyc/data/tess/sector001/*.fits'
+path_to_lcs='/data/epyc/data/tess/sector003/*.fits'
 
 ### DON'T TOUCH ANYTHING BELOW HERE
-
+dfminp=dfmin/100.
 j=0
 for i in glob.glob(path_to_lcs):
 	try:
@@ -59,7 +57,7 @@ for i in glob.glob(path_to_lcs):
 	
 		dat=image_data[~np.isnan(image_data[fluxtype])]
 		
-		if((dat[fluxtype].max()>fmin) & ((dat[fluxtype].max()-dat[fluxtype].min())>dfmin)):
+		if((dat[fluxtype].max()>fmin) & (((dat[fluxtype].max()-dat[fluxtype].min())/dat[fluxtype].mean())>dfminp)):
 
 			[hist,xbins,ybins]=np.histogram2d(dat["TIME"],dat[fluxtype], bins=[tbins,fbins], range=None)
 	
